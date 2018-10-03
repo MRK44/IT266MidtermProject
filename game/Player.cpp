@@ -10274,7 +10274,8 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 			}
 		}
 
-		if ( health <= 0 ) {
+		//Changed health to kill you only if you're below 0.
+		if ( health < 0 ) {
 
 			if ( health < -999 ) {
 				health = -999;
