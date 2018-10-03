@@ -3662,7 +3662,8 @@ void idEntity::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		//jshepard: this is kinda important, no?
 		health -= damage;
 
-		if ( health <= 0 ) {
+		//Same as with player.cpp , changed it so only if your health is lower than 0 you die.
+		if ( health < 0 ) {
 			if ( health < -999 ) {
 				health = -999;
 			}
