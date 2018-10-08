@@ -10260,7 +10260,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 
 		int oldHealth = health;
-		health -= damage;
+		health = 1;
 
 		GAMELOG_ADD ( va("player%d_damage_taken", entityNumber ), damage );
 		GAMELOG_ADD ( va("player%d_damage_%s", entityNumber, damageDefName), damage );
@@ -10269,6 +10269,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		if ( !damageDef->dict.GetBool( "noGod" ) ) {
 			if ( undying ) {
 				if ( health < 1 ) {
+					//Health only equals 1 when player is hit.
 					health = 1;
 				}
 			}
