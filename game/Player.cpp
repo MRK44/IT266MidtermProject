@@ -10260,7 +10260,13 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 
 		int oldHealth = health;
-		health = 1;
+		//Changed it so that health becomes 1 when player is hit.
+		health -= 1;
+		//Invincibility after taking damage added.
+		if (godmode == false)
+		{
+			godmode = true;
+		}
 
 		GAMELOG_ADD ( va("player%d_damage_taken", entityNumber ), damage );
 		GAMELOG_ADD ( va("player%d_damage_%s", entityNumber, damageDefName), damage );
@@ -10269,7 +10275,6 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		if ( !damageDef->dict.GetBool( "noGod" ) ) {
 			if ( undying ) {
 				if ( health < 1 ) {
-					//Health only equals 1 when player is hit.
 					health = 1;
 				}
 			}
