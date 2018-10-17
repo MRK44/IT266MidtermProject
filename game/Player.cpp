@@ -18,6 +18,7 @@
 #include "Healing_Station.h"
 #include "ai/AI_Medic.h"
 
+
 // RAVEN BEGIN
 // nrausch: support for turning the weapon change ui on and off
 #ifdef _XENON
@@ -53,6 +54,9 @@ const int HEALTH_PER_DOSE = 10;
 
 // time before a weapon dropped to the floor disappears
 const int WEAPON_DROP_TIME = 20 * 1000;
+
+//Time before GodMode dissapears?
+const int INVINCE_TIME = 150000;
 
 // time before a next or prev weapon switch happens
 const int	WEAPON_SWITCH_DELAY		= 150;
@@ -10260,16 +10264,24 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 
 		int oldHealth = health;
+		//int invinceTime;
 		//Changed it so that health becomes 1 when player is hit.
-		health -= 1;
+		health = 1;
+	
 		//Invincibility after taking damage added.
 		if (godmode == false)
 		{
-			godmode = true;
+			//RingsScatter Function will go here.
+				godmode = true;
+			//Wait 5 seconds until godMode dissapates.
+				//godmode = false;
 		}
-
+		
+		
 		GAMELOG_ADD ( va("player%d_damage_taken", entityNumber ), damage );
 		GAMELOG_ADD ( va("player%d_damage_%s", entityNumber, damageDefName), damage );
+
+		
 
 		// Check undying mode
 		if ( !damageDef->dict.GetBool( "noGod" ) ) {
