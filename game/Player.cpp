@@ -3396,7 +3396,7 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	temp = _hud->State().GetInt ( "player_health", "-1" );
 	if ( temp != health ) {		
 		_hud->SetStateInt   ( "player_healthDelta", temp == -1 ? 0 : (temp - health) );
-		//Another noob set health test
+		//Change player health display to 1.
 		_hud->SetStateInt	( "player_health", (health-1) < -100 ? -100 : (health -1) );
 		_hud->SetStateFloat	( "player_healthpct", idMath::ClampFloat ( 0.0f, 1.0f, (float)health / (float)inventory.maxHealth ) );
 		_hud->HandleNamedEvent ( "updateHealth" );
@@ -7209,7 +7209,7 @@ void idPlayer::UpdateFocus( void ) {
 						ui->SetStateInt( p, 1 );
 					}
 				}
-				//Set the health of player noob
+				//Set the health changed.
 				ui->SetStateString( "player_health", va("%i", (health -1)) );
 				ui->SetStateString( "player_armor", va( "%i%%", inventory.armor ) );
 
@@ -10270,14 +10270,21 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		
 	
 		//Invincibility after taking damage added.
-		if (godmode == false)
+		if (health > 1)
 		{
 			health = 1;
 			//RingsScatter Function will go here.
-				godmode = true;
+			//godmode = true;
 			//Wait 5 seconds until godMode dissapates.
-				//godmode = false;
+			//godmode = false;
+			
 		}
+		else
+		{
+			health -= damage;
+		}
+		
+		
 		
 		GAMELOG_ADD ( va("player%d_damage_taken", entityNumber ), damage );
 		GAMELOG_ADD ( va("player%d_damage_%s", entityNumber, damageDefName), damage );
@@ -10293,8 +10300,8 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 			}
 		}
 
-		//Changed health to kill you only if you're below 0.
-		if ( health < 0 ) {
+	
+		if ( health <= 0 ) {
 
 			if ( health < -999 ) {
 				health = -999;
