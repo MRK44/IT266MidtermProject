@@ -3399,6 +3399,7 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 		_hud->SetStateInt	( "player_health", health < -100 ? -100 : health );
 		_hud->SetStateFloat	( "player_healthpct", idMath::ClampFloat ( 0.0f, 1.0f, (float)health / (float)inventory.maxHealth ) );
 		_hud->HandleNamedEvent ( "updateHealth" );
+		_hud->HandleNamedEvent("updateRings");
 	}
 		
 	temp = _hud->State().GetInt ( "player_armor", "-1" );
@@ -10266,17 +10267,17 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		int oldHealth = health;
 		//int invinceTime;
 		//Changed it so that health becomes 1 when player is hit.
-		health = 1;
+		
 	
 		//Invincibility after taking damage added.
 		if (godmode == false)
 		{
+			health = 1;
 			//RingsScatter Function will go here.
 				godmode = true;
 			//Wait 5 seconds until godMode dissapates.
 				//godmode = false;
 		}
-		
 		
 		GAMELOG_ADD ( va("player%d_damage_taken", entityNumber ), damage );
 		GAMELOG_ADD ( va("player%d_damage_%s", entityNumber, damageDefName), damage );
@@ -11198,6 +11199,7 @@ idPlayer::Event_SetHealth
 */
 void idPlayer::Event_SetHealth( float newHealth ) {
 	health = idMath::ClampInt( 1 , inventory.maxHealth, newHealth );
+	rings = (health +1 );
 }
 /*
 =============
