@@ -3396,10 +3396,10 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	temp = _hud->State().GetInt ( "player_health", "-1" );
 	if ( temp != health ) {		
 		_hud->SetStateInt   ( "player_healthDelta", temp == -1 ? 0 : (temp - health) );
-		_hud->SetStateInt	( "player_health", health < -100 ? -100 : health );
+		//Another noob set health test
+		_hud->SetStateInt	( "player_health", (health-1) < -100 ? -100 : (health -1) );
 		_hud->SetStateFloat	( "player_healthpct", idMath::ClampFloat ( 0.0f, 1.0f, (float)health / (float)inventory.maxHealth ) );
 		_hud->HandleNamedEvent ( "updateHealth" );
-		_hud->HandleNamedEvent("updateRings");
 	}
 		
 	temp = _hud->State().GetInt ( "player_armor", "-1" );
@@ -7209,8 +7209,8 @@ void idPlayer::UpdateFocus( void ) {
 						ui->SetStateInt( p, 1 );
 					}
 				}
-
-				ui->SetStateString( "player_health", va("%i", health ) );
+				//Set the health of player noob
+				ui->SetStateString( "player_health", va("%i", (health -1)) );
 				ui->SetStateString( "player_armor", va( "%i%%", inventory.armor ) );
 
 				kv = ent->spawnArgs.MatchPrefix( "gui_", NULL );
