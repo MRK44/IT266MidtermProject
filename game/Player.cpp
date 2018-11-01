@@ -10265,22 +10265,32 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 
 		int oldHealth = health;
-		//int invinceTime;
+		int invinceTime;
 		//Changed it so that health becomes 1 when player is hit.
 		
 	
 		//Invincibility after taking damage added.
 		if (health > 1)
 		{
+			invinceTime = gameLocal.time;
 			health = 1;
+			spawnArgs.Set("def_dropsItem1", "item_health_small");
 			//RingsScatter Function will go here.
-			//godmode = true;
+			godmode = true;
+			if (invinceTime > (gameLocal.time + INVINCE_TIME))
+			{
+				godmode = false;
+			}
 			//Wait 5 seconds until godMode dissapates.
 			//godmode = false;
 			
 		}
 		else
 		{
+			if (invinceTime > (gameLocal.time + INVINCE_TIME))
+			{
+				godmode = false;
+			}
 			health -= damage;
 		}
 		
@@ -11206,7 +11216,6 @@ idPlayer::Event_SetHealth
 */
 void idPlayer::Event_SetHealth( float newHealth ) {
 	health = idMath::ClampInt( 1 , inventory.maxHealth, newHealth );
-	rings = (health +1 );
 }
 /*
 =============
